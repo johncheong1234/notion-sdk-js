@@ -14,6 +14,36 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/views/index.html")
 })
 
+app.get("/page", async (request, response) => {
+
+  try {
+    const pageId = "4aa034338c7e4d9db6629f4a97f2bd88"
+    const notionResponse = await notion.pages.retrieve({ page_id: pageId });
+    console.log(notionResponse);
+    response.json(notionResponse);
+  } catch (error) {
+    console.error('Error retrieving Notion page:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+
+})
+
+app.get("/block", async (request, response) => {
+
+  try {
+    const pageId = "4aa034338c7e4d9db6629f4a97f2bd88"
+    const notionResponse = await notion.blocks.children.list({
+      block_id: pageId,
+      page_size: 50,
+    });
+    response.json(notionResponse);
+  } catch (error) {
+    console.error('Error retrieving Notion blocks:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+
+})
+
 // Create new database. The page ID is set in the environment variables.
 app.post("/databases", async function (request, response) {
   const pageId = process.env.NOTION_PAGE_ID
@@ -139,6 +169,6 @@ app.post("/comments", async function (request, response) {
 })
 
 // listen for requests :)
-const listener = app.listen(process.env.PORT, function () {
+const listener = app.listen(5000, function () {
   console.log("Your app is listening on port " + listener.address().port)
 })
