@@ -140,3 +140,12 @@ commentForm.onsubmit = async function (event) {
   const newCommentData = await newCommentResponse.json()
   appendApiResponse(newCommentData, commentResponseEl)
 }
+
+
+(async () => {
+  const blockId = '16d8004e5f6a42a6981151c22ddada12';
+  const response = await notion.blocks.children.list({
+    block_id: blockId,
+  });
+  console.log('block response ', response);
+})();
