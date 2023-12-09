@@ -28,12 +28,12 @@ app.get("/page", async (request, response) => {
 
 })
 
-app.get("/block", async (request, response) => {
+app.get("/block/:blockId", async (request, response) => {
 
   try {
-    const pageId = "4aa034338c7e4d9db6629f4a97f2bd88"
+    const blockId = request.params.blockId;
     const notionResponse = await notion.blocks.children.list({
-      block_id: pageId,
+      block_id: blockId,
       page_size: 50,
     });
     response.json(notionResponse);
