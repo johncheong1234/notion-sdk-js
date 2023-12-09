@@ -45,9 +45,21 @@ app.get("/block/:blockId", async (request, response) => {
       id: blockId,
       blocks: {}
     }
-    console.log('this is ',page_ds);
+    
     console.log('results are ', notionResponse.results.length);
+    for(let i = 0; i < notionResponse.results.length; i++) {
+      const block = notionResponse.results[i];
+      
+      page_ds.blocks[block.id] = {
 
+      };
+
+      if (block.has_children) {
+        console.log('block has children');
+      }
+    }
+
+    console.log('this is page data structure',page_ds);
     response.json(notionResponse);
   } catch (error) {
     console.error('Error retrieving Notion blocks:', error);
