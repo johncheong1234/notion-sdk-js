@@ -14,13 +14,17 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + "/views/index.html")
 })
 
-app.get("/page", async (request, response) => {
+app.get("/page/:pageId", async (request, response) => {
 
   try {
-    const pageId = "4aa034338c7e4d9db6629f4a97f2bd88"
+    const pageId = request.params.pageId;
     const notionResponse = await notion.pages.retrieve({ page_id: pageId });
     console.log(notionResponse);
+
     response.json(notionResponse);
+    
+
+    
   } catch (error) {
     console.error('Error retrieving Notion page:', error);
     response.status(500).json({ error: 'Internal Server Error' });
@@ -36,6 +40,14 @@ app.get("/block/:blockId", async (request, response) => {
       block_id: blockId,
       page_size: 50,
     });
+
+    const page_ds = {
+      id: blockId,
+      blocks: {}
+    }
+    console.log('this is ',page_ds);
+    console.log('results are ', notionResponse.results.length);
+
     response.json(notionResponse);
   } catch (error) {
     console.error('Error retrieving Notion blocks:', error);
